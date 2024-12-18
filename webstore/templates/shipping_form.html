@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Shipping Information</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <h3>Total Price: Rs.{{ total_price }}</h3>
+
+        <button type="submit" class="btn btn-success">Place Order</button>
+        <a href="{% url 'view_cart' %}" class="btn btn-secondary">Back to Cart</a>
+
+    </form>
+</div>
+{% endblock %}

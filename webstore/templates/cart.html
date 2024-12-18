@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+
+    {% endfor %}
+  {% endif %}
+    <h2>Your Cart</h2>
+    {% if cart %}
+    <table class="table">
+    <thead>   
+        <th>Image</th>
+        <th>Item</th>
+        <th style="width: 10%;">Quantity</th>
+        <th style="width: 10%;">Price</th>
+        <th style="width: 10%;"></th>
+    </tr>
+</thead>
+<tbody>
+    {% for item_id, item in cart.items %}
+    <tr data-id="{{ item_id }}">
+        <!-- Display item image -->
+        <td>
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-thumbnail" style="width: 50px; height: 50px;">
+        </td>
+        <td>{{ item.name }}</td>
+        <td>
+            <!-- Number field to change quantity -->
+            <input type="number" class="form-control quantity" data-id="{{ item_id }}" value="{{ item.quantity }}" min="0">
+        </td>
+
+             <td>Rs.{{ item.price }}</td>   
+             <td>
+                <button class="btn btn-danger remove-item" data-id="{{ item_id }}">Remove</button>
+            </td>           
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Total: Rs.<span id="order-total">{{ total_price|floatformat:2 }}</span></h3>
+    <button class="btn btn-success" onclick="location.href='{% url 'place_order' %}'">Proceed</button>
+    <a href="{% url 'item_list' %}" class="btn btn-secondary">Add more</a>
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+    <!--location.href='url 'place_order' '-->
+</div>
+
+<script>
+$(document).ready(function(){
+    // When the quantity changes
+    $('.quantity').on('input', function(){
+        var itemId = $(this).data('id');  // Get the item ID
+        var quantity = $(this).val();  // Get the new quantity
+
+        // Ensure the quantity is a valid positive number
+        if (quantity < 0) {
+            quantity = 0;
+            $(this).val(0);
+        }
+
+        // AJAX request to update the cart
+        $.ajax({
+            url: "{% url 'update_cart' %}",
+            type: "POST",
+            data: {
+                'item_id': itemId,
+                'quantity': quantity,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+                // Update the total price and item total price dynamically
+                $('#order-total').text(data.total_price.toFixed(2));  // Update total price
+               // $('input[data-id="' + itemId + '"]').closest('tr').find('.item-total').text('$' + data.item_total_price.toFixed(2));  // Update item total price
+            }
+        });
+    });
+    // When the "Remove item" button is clicked
+    $('.remove-item').on('click', function(){
+        var itemId = $(this).data('id');  // Get the item ID
+
+        // Request to remove the item from the cart
+        $.ajax({
+            url: "{% url 'remove_from_cart' %}",  // Remove item view
+            type: "POST",
+            data: {
+                'item_id': itemId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+                // Remove the row from the table
+                $('tr[data-id="' + itemId + '"]').remove();
+                // Update the total price
+                $('#order-total').text(data.total_price.toFixed(2));  // Update total price
+            }
+        });
+    });
+    
+});
+
+</script>
+{% endblock %}
