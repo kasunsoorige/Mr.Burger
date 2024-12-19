@@ -1,0 +1,24 @@
+<h2>Manage Menu</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td>Rs. {{ item.price }}</td>
+            <td>
+                <a href="{% url 'edit_menu' item.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_menu' item.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

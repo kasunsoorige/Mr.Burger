@@ -5,6 +5,11 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .forms import AddMenuForm, ShippingForm
 from .models import Menu,ShippingDetails,Order,OrderItem
+from .models import Menu
+
+
+
+
 # Create your views here.
 
 def home(request):
@@ -182,6 +187,29 @@ def place_order(request):
         'total_price': total_price
     })
 
+
+
+def manage_menu(request):
+    items = Menu.objects.all()
+    return render(request, 'manage_menu.html', {'items': items})
+
+def edit_menu(request, item_id):
+    item = get_object_or_404(Menu, id=item_id)
+    if request.method == 'POST':
+        form = AddMenuForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_menu')
+    else:
+        form = AddMenuForm(instance=item)
+    return render(request, 'edit_menu.html', {'form': form})
+
+def delete_menu(request, item_id):
+    item = get_object_or_404(Menu, id=item_id)
+    if request.method == 'POST':
+        item.delete()
+        return redirect('manage_menu')
+    return render(request, 'delete_menu.html', {'item': item})
 
 
 def order_success(request):
