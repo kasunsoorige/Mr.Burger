@@ -196,7 +196,7 @@ def manage_menu(request):
 def edit_menu(request, item_id):
     item = get_object_or_404(Menu, id=item_id)
     if request.method == 'POST':
-        form = AddMenuForm(request.POST, instance=item)
+        form = AddMenuForm(request.POST, request.FILES, instance=item)  # Include request.FILES here
         if form.is_valid():
             form.save()
             return redirect('manage_menu')
