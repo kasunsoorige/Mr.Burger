@@ -1,30 +1,33 @@
 from django.db import models
 import json
 
-
 # Create your models here.
 class Menu(models.Model):
-    name=models.CharField(max_length=50)
-    description=models.CharField(max_length=400)
-    price=models.FloatField()
-    img_url=models.ImageField(upload_to='images/')
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=400)
+    price = models.FloatField()
+    img_url = models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return self.name
 
 
 class Order(models.Model):
-    items = models.TextField() # use for sqlite
-   # items = models.JSONField()   Store cart items in JSON format MySql
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    items = models.TextField()  # Use for sqlite
+    # items = models.JSONField()  # Uncomment for MySQL to store cart items in JSON format
     order_date = models.DateTimeField(auto_now_add=True)
     STATUS_CHOICES = [
         ('Incomplete', 'Incomplete'),
         ('Complete', 'Complete'),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Incomplete')
-
+    total_price = models.FloatField(default=0)
     def __str__(self):
-        return f"Order #{self.id} - {self.status}"  
+        return f"Order #{self.id} - {self.status}"
 
-    # To save the items as JSON  Only need for Sqlite
+    
+
+    # To save the items as JSON for SQLite (only needed if using SQLite)
     def save(self, *args, **kwargs):
         if isinstance(self.items, dict):
             self.items = json.dumps(self.items)  # Convert dictionary to JSON string
@@ -32,7 +35,7 @@ class Order(models.Model):
 
     # To load items as a dictionary when needed
     def get_items(self):
-        return json.loads(self.items)     
+        return json.loads(self.items)
 
 
 class ShippingDetails(models.Model):
@@ -48,8 +51,7 @@ class ShippingDetails(models.Model):
 
     def __str__(self):
         return f"Shipping for Order #{self.order.id}"
-    
-            
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -59,6 +61,7 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.item.name} (x{self.quantity})"
 
+    # Calculate the total price for an individual item (price * quantity)
     @property
     def total_price(self):
         return self.item.price * self.quantity

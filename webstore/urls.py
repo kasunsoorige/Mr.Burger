@@ -17,7 +17,8 @@ urlpatterns = [
     path('edit_menu/<int:item_id>/', views.edit_menu, name='edit_menu'),
     path('delete_menu/<int:item_id>/', views.delete_menu, name='delete_menu'),
 
-    path('dashboard/orders/', view_orders, name='view_orders'),
+    path('dashboard/orders', views.view_orders, name='view_orders'),  # Correct URL pattern
+    path('dashboard/orders/update/<int:order_id>/', views.update_order_status, name='update_order_status'),
 
 
 
