@@ -1,5 +1,6 @@
 from django.urls import path
 from .import views
+from .views import view_orders
 
 urlpatterns = [
     path('', views.item_list, name='item_list'),
@@ -15,6 +16,9 @@ urlpatterns = [
     path('manage_menu/', views.manage_menu, name='manage_menu'),
     path('edit_menu/<int:item_id>/', views.edit_menu, name='edit_menu'),
     path('delete_menu/<int:item_id>/', views.delete_menu, name='delete_menu'),
+
+    path('dashboard/orders/', view_orders, name='view_orders'),
+
 
 
 ]    

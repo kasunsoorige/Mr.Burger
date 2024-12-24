@@ -6,8 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import AddMenuForm, ShippingForm
 from .models import Menu,ShippingDetails,Order,OrderItem
 from .models import Menu
-
-
+from .models import Order
 
 
 # Create your views here.
@@ -139,7 +138,7 @@ def remove_from_cart(request):
 
 
 def place_order(request):
-    cart = request.session.get('cart', {})  # Fetch the cart from session
+    cart = request.session.get('cart', {})
     total_price = sum(float(item['price']) * int(item['quantity']) for item in cart.values())
 
     if not cart:
@@ -155,10 +154,10 @@ def place_order(request):
             # Step 2: Save each item in the cart as an OrderItem
             for item_id, item_data in cart.items():
                 try:
-                    menu_item = Menu.objects.get(id=item_id)  # Get the item from the Menu model
+                    menu_item = Menu.objects.get(id=item_id)
                     OrderItem.objects.create(
                         order=order,
-                        item=menu_item,  # ForeignKey to Menu
+                        item=menu_item,
                         quantity=item_data['quantity']
                     )
                 except Menu.DoesNotExist:
@@ -167,7 +166,7 @@ def place_order(request):
 
             # Step 3: Save the shipping details
             shipping_details = form.save(commit=False)
-            shipping_details.order = order  # Link shipping details to the order
+            shipping_details.order = order
             shipping_details.save()
 
             # Step 4: Clear the cart after order is placed
@@ -176,16 +175,13 @@ def place_order(request):
 
             # Step 5: Success message and redirect
             messages.success(request, "Your order has been placed successfully!")
-            return redirect('order_success')
+            return redirect('order_success')  # Update with your success page view name
         else:
             messages.error(request, "There was an error with your shipping details.")
     else:
         form = ShippingForm()
 
-    return render(request, 'shipping_form.html', {
-        'form': form,
-        'total_price': total_price
-    })
+    return render(request, 'shipping_form.html', {'form': form, 'total_price': total_price})
 
 
 
@@ -214,3 +210,13 @@ def delete_menu(request, item_id):
 
 def order_success(request):
     return render(request, 'order_success.html')
+
+
+
+
+#new
+
+def view_orders(request):
+    # Fetch all orders from the database
+    orders = Order.objects.all().order_by('-order_date')  # Latest orders first
+    return render(request, 'view_orders.html', {'orders': orders})
