@@ -32,7 +32,60 @@
     </div>
 </div>
 <div>
-  <h1>Test</h1>
-</div>
-{% endblock %}
-
+      <!-- Table Reservation Form -->
+      <div>
+        <h1>Book a Table</h1>
+        <form method="POST" action="{% url 'book_table' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="date" class="form-label">Select Date</label>
+                <input type="date" class="form-control" id="date" name="reservation_date" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="time" class="form-label">Select Time</label>
+                <select class="form-select" id="time" name="reservation_time" required>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="1:00">1:00 PM</option>
+                    <option value="2:00">2:00 PM</option>
+                    <option value="3:00">3:00 PM</option>
+                    <option value="4:00">4:00 PM</option>
+                    <option value="5:00">5:00 PM</option>
+                    <option value="6:00">6:00 PM</option>
+                    <option value="7:00">7:00 PM</option>
+                    <option value="7:30">7:30 PM</option>
+                </select>
+            </div>
+    
+            <div class="mb-3">
+                <label for="people" class="form-label">Number of People</label>
+                <select class="form-select" id="people" name="num_people" required>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+    
+            <div class="mb-3">
+                <label for="space_preference" class="form-label">Space Preference</label>
+                <select class="form-select" id="space_preference" name="space_preference" required>
+                    <option value="Inside">Inside</option>
+                    <option value="Outside">Outside</option>
+                </select>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Book Table</button>
+        </form>
+    </div>
+    </div>
+    
+    {% endblock %}
+    

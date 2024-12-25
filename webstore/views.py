@@ -7,7 +7,7 @@ from .forms import AddMenuForm, ShippingForm
 from .models import Menu,ShippingDetails,Order,OrderItem
 from .models import Menu
 from .models import Order
-
+from .models import Reservation
 
 # Create your views here.
 
@@ -250,3 +250,63 @@ def update_order_status(request, order_id):
         order.save()
         messages.success(request, f"Order {order_id} status updated to {new_status}.")
     return redirect('view_orders')  # Redirect back to the orders page
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Reservation
+
+def book_table(request):
+    if request.method == "POST":
+        # Collect reservation details from the initial form
+        reservation_date = request.POST.get("reservation_date")
+        reservation_time = request.POST.get("reservation_time")
+        num_people = request.POST.get("num_people")
+        space_preference = request.POST.get("space_preference")
+        
+        # Save these details in the session temporarily
+        request.session['reservation_details'] = {
+            "date": reservation_date,
+            "time": reservation_time,
+            "num_people": num_people,
+            "space_preference": space_preference,
+        }
+        
+        # Redirect to the customer details form
+        return redirect('customer_details_form')
+
+    return render(request, 'book_table.html')
+
+def customer_details_form(request):
+    if request.method == "POST":
+        # Retrieve details from the session
+        reservation_details = request.session.get('reservation_details', {})
+        customer_name = request.POST.get('name')
+        customer_email = request.POST.get('email')
+        customer_phone = request.POST.get('phone')
+
+        # Save all details to the database
+        Reservation.objects.create(
+            date=reservation_details.get("date"),
+            time=reservation_details.get("time"),
+            num_people=reservation_details.get("num_people"),
+            space_preference=reservation_details.get("space_preference"),
+            customer_name=customer_name,
+            customer_email=customer_email,
+            customer_phone=customer_phone,
+        )
+
+        messages.success(request, "Your table has been reserved!")
+        return redirect('reservation_success')
+
+    return render(request, 'customer_details_form.html')
+
+
+
+def view_reservations(request):
+    reservations = Reservation.objects.all()  # Get all reservations from the database
+    return render(request, 'view_reservations.html', {'reservations': reservations})
+
+
+def reservation_success(request):
+    return render(request, 'reservation_success.html')

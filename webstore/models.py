@@ -1,6 +1,9 @@
 from django.db import models
 import json
 
+
+from django.db import models
+
 # Create your models here.
 class Menu(models.Model):
     name = models.CharField(max_length=50)
@@ -65,3 +68,17 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.item.price * self.quantity
+
+
+
+
+
+class Reservation(models.Model):
+    date = models.DateField()
+    time = models.TimeField()
+    num_people = models.IntegerField()
+    space_preference = models.CharField(max_length=50)
+    customer_name = models.CharField(max_length=100)
+    customer_email = models.EmailField()
+    customer_phone = models.CharField(max_length=15)
+

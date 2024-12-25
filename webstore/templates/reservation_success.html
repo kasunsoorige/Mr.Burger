@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h1>Reservation Successful!</h1>
+    <p>Thank you for reserving a table. We look forward to serving you!</p>
+    <a href="{% url 'item_list' %}" class="btn btn-primary">Go Back to Menu</a>
+  </div>
+{% endblock %}
+
+
