@@ -19,7 +19,11 @@ urlpatterns = [
 
     path('dashboard/orders', views.view_orders, name='view_orders'),  # Correct URL pattern
     path('dashboard/orders/update/<int:order_id>/', views.update_order_status, name='update_order_status'),
-
-
+    
+    path('book_table/', views.book_table, name='book_table'),
+    path('item_list/', views.item_list, name='item_list'),
+    path('reservations/', views.view_reservations, name='view_reservations'),
+    path('customer-details/', views.customer_details_form, name='customer_details_form'),
+    path('reservation-success/', views.reservation_success, name='reservation_success'),
 
 ]    
