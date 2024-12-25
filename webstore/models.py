@@ -6,7 +6,7 @@ class Menu(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=400)
     price = models.FloatField()
-    img_url = models.ImageField(upload_to='images/')
+    img_url = models.ImageField(upload_to='static/')
 
     def __str__(self):
         return self.name
