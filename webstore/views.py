@@ -6,8 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import AddMenuForm, ShippingForm
 from .models import Menu,ShippingDetails,Order,OrderItem
 from .models import Menu
-
-
+from .models import Order
 
 
 # Create your views here.
@@ -139,7 +138,7 @@ def remove_from_cart(request):
 
 
 def place_order(request):
-    cart = request.session.get('cart', {})  # Fetch the cart from session
+    cart = request.session.get('cart', {})
     total_price = sum(float(item['price']) * int(item['quantity']) for item in cart.values())
 
     if not cart:
@@ -149,43 +148,40 @@ def place_order(request):
     if request.method == 'POST':
         form = ShippingForm(request.POST)
         if form.is_valid():
-            # Step 1: Create a new Order
+            # Create a new Order with total_price
             order = Order.objects.create(total_price=total_price)
 
-            # Step 2: Save each item in the cart as an OrderItem
+            # Save each item in the cart as an OrderItem
             for item_id, item_data in cart.items():
                 try:
-                    menu_item = Menu.objects.get(id=item_id)  # Get the item from the Menu model
+                    menu_item = Menu.objects.get(id=item_id)
                     OrderItem.objects.create(
                         order=order,
-                        item=menu_item,  # ForeignKey to Menu
+                        item=menu_item,
                         quantity=item_data['quantity']
                     )
                 except Menu.DoesNotExist:
                     messages.error(request, f"Item with id {item_id} does not exist.")
                     return redirect('cart')
 
-            # Step 3: Save the shipping details
+            # Save the shipping details
             shipping_details = form.save(commit=False)
-            shipping_details.order = order  # Link shipping details to the order
+            shipping_details.order = order
             shipping_details.save()
 
-            # Step 4: Clear the cart after order is placed
+            # Clear the cart after order is placed
             request.session['cart'] = {}
             request.session['total_price'] = 0
 
-            # Step 5: Success message and redirect
+            # Success message and redirect
             messages.success(request, "Your order has been placed successfully!")
-            return redirect('order_success')
+            return redirect('order_success')  # Update with your success page view name
         else:
             messages.error(request, "There was an error with your shipping details.")
     else:
         form = ShippingForm()
 
-    return render(request, 'shipping_form.html', {
-        'form': form,
-        'total_price': total_price
-    })
+    return render(request, 'shipping_form.html', {'form': form, 'total_price': total_price})
 
 
 
@@ -214,3 +210,43 @@ def delete_menu(request, item_id):
 
 def order_success(request):
     return render(request, 'order_success.html')
+
+
+
+
+#new
+
+def view_orders(request):
+    # Retrieve all orders
+    orders = Order.objects.all()
+    order_details = []
+
+    for order in orders:
+        # Fetch order items
+        order_items = OrderItem.objects.filter(order=order)
+        
+        # Fetch shipping details for the order
+        try:
+            shipping_details = ShippingDetails.objects.get(order=order)
+        except ShippingDetails.DoesNotExist:
+            shipping_details = None  # In case shipping details are missing
+
+        # Prepare data for display
+        order_detail = {
+            'order': order,
+            'shipping_details': shipping_details,
+            'order_items': order_items
+        }
+        order_details.append(order_detail)
+
+    return render(request, 'view_orders.html', {'order_details': order_details})
+
+
+def update_order_status(request, order_id):
+    if request.method == 'POST':
+        order = get_object_or_404(Order, id=order_id)
+        new_status = request.POST.get('status')
+        order.status = new_status
+        order.save()
+        messages.success(request, f"Order {order_id} status updated to {new_status}.")
+    return redirect('view_orders')  # Redirect back to the orders page

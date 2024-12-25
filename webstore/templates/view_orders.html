@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Orders</title>
+    <!-- Link to the CSS file 
+    {% load static %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}"> -->
+    <style>
+        .styled-table {
+            width: 100%; /* Make the table take the full width of its container */
+            border-collapse: collapse; /* Remove spacing between table cells */
+            margin: 20px 0; /* Add some spacing above and below the table */
+            font-size: 18px; /* Adjust font size */
+            text-align: left; /* Align text to the left */
+        } </style>
+</head>
+<body>
+<h1>All Orders</h1>
+<table class="styled-table">
+    <thead>
+        
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Shipping Address</th>
+            <th>Items</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_detail in order_details %}
+            <tr>
+                <td>{{ order_detail.order.id }}</td>
+                <td>
+                    <form method="POST" action="{% url 'update_order_status' order_detail.order.id %}">
+                        {% csrf_token %}
+                        <select name="status">
+                            <option value="In Progress" {% if order_detail.order.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if order_detail.order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            <option value="Canceled" {% if order_detail.order.status == 'Canceled' %}selected{% endif %}>Canceled</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                
+                <!-- Display Shipping Details -->
+                {% if order_detail.shipping_details %}
+                    <td>{{ order_detail.shipping_details.name }}</td>
+                    <td>{{ order_detail.shipping_details.phone }}</td>
+                    <td>{{ order_detail.shipping_details.street1 }}</td>
+                {% else %}
+                    <td colspan="3">No shipping details available</td>
+                {% endif %}
+                
+                <!-- Display Order Items -->
+                <td>
+                    <ul>
+                        {% for item in order_detail.order_items %}
+                            <li> {{ item.item.name }} (x{{ item.quantity }}) - Rs.{{ item.item.price|floatformat:2 }} </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+
+                <!-- Total Price -->
+                <td> Rs.{{ order_detail.order.total_price|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
