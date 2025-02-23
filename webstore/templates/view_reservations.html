@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container">
-    <h1>View Reservations</h1>
+<div class="container" style="background-color: #fff4e6; padding: 20px;">
+    <h1 class="center" style="color: black; text-align: center;">Reservations</h1>
 
     {% if reservations %}
-    <table class="table table-bordered">
+    <table class="table" style="width: 100%; margin-top: 20px; border-radius: 10px; overflow: hidden; background: #fff;">
         <thead>
-            <tr>
+            <tr style="background: #f8f9fa; font-weight: bold;">
                 <th>#</th>
                 <th>Reservation Date</th>
                 <th>Reservation Time</th>
@@ -33,7 +34,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>No reservations found.</p>
+    <p style="text-align: center; font-size: 18px;">No reservations found.</p>
     {% endif %}
 </div>
 {% endblock %}

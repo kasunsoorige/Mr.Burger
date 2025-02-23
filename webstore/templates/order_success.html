@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-    <h2>Order Placed Successfully!</h2>
-    <a href="{% url 'item_list' %}" class="btn btn-primary">Continue Shopping</a>
+<div class="container text-center" style="margin-top: 50px; background-color: #fff4e6; padding: 20px; border-radius: 10px;">
+    <h2 class="text-success">Order Placed Successfully!</h2>
+    <a href="{% url 'item_list' %}" class="btn btn-primary btn-lg">Continue Shopping</a>
 </div>
 {% endblock %}

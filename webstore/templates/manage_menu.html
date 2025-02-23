@@ -1,4 +1,73 @@
-<h2>Manage Menu</h2>
+
+<style>
+
+
+    body {
+    background-color: #fff4e6; /* Set the background color for the entire page */
+    }
+
+    .center {
+        text-align: center; /* Center the text */
+    }
+    
+    .table {
+        width: 80%; /* Adjust width for centering */
+        margin: 20px auto; /* Center the table */
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table thead {
+        background: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background: #f2f2f2;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .btn-warning {
+        background: #ffcc00;
+        color: #000;
+        border: none;
+    }
+
+    .btn-danger {
+        background: #e74c3c;
+        color: #fff;
+        border: none;
+    }
+
+    .btn-warning:hover {
+        background: #e6b800;
+    }
+
+    .btn-danger:hover {
+        background: #c0392b;
+    }
+
+    .table td a {
+        display: inline-block;
+        margin-right: 10px; /* Adds spacing */
+    }
+</style>
+
+<h2 class="center">Manage Menu</h2>
 <table class="table">
     <thead>
         <tr>
@@ -13,9 +82,10 @@
         <tr>
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
-            <td>Rs. {{ item.price }}</td>
-            <td>
-                <a href="{% url 'edit_menu' item.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <td>Rs. {{ item.price|floatformat:2 }}</td>
+
+            <td class="d-flex">
+                <a href="{% url 'edit_menu' item.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
                 <a href="{% url 'delete_menu' item.id %}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>

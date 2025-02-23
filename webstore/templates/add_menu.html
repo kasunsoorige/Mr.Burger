@@ -1,22 +1,19 @@
 {% extends 'base_dash.html' %}
+
 {% block content %}
+<div class="col-md-6 offset-md-3" style="background-color: #fff4e6; padding: 20px; border-radius: 10px;">
+    <h1 class="center" style="color: black; text-align: center;">Add Menu</h1>
+    <br/>
 
-<div class="col-md-6 offset-md-3">
-<h1>Add menu</h1>
-<br/>
+    <form method="POST" action="{% url 'add_menu' %}" enctype="multipart/form-data">
+        {% csrf_token %}
 
-<form method="POST" action="{% url 'add_menu' %}" enctype="multipart/form-data">
-	{% csrf_token %}
+        {{ form.as_p }}
 
-	{{ form.as_p }}
-
-<br/>
-  <button type="submit" class="btn btn-secondary">Add Menu</button>
-   <a href="{% url 'dash' %}" class="btn btn-secondary">Back</a>
-
-</form>
-
-
+        <br/>
+        <button type="submit" class="btn btn-secondary">Add Menu</button>
+        <a href="{% url 'dash' %}" class="btn btn-secondary">Back</a>
+    </form>
 </div>
 
 {% endblock %}
