@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-
     
     {% load static %}
     <style>
@@ -45,8 +44,16 @@
             text-align: center; 
             margin-top: 10px; 
         }
+        .card {
+            height: 100%; /* Allow the card to fill the column height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px; /* Space between cards */
+            border: none; /* Remove default card border */
+        }
         .card-img-top {
-            height: 500px; 
+            height: 200px; /* Set a fixed height for images */
             object-fit: cover; 
         }
         .bg-light-orange {
