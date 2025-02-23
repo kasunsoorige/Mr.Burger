@@ -52,6 +52,20 @@
             margin-bottom: 20px; /* Space between cards */
             border: none; /* Remove default card border */
         }
+
+        .card-body {
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between;
+        }
+
+       .add-to-cart-btn {
+           width: auto; /* Makes the button fit its content */
+           padding: 5px 10px; /* Adjusts the padding for a shorter button */
+           margin-top: auto; /* Keeps the button at the bottom of the card */
+           margin-bottom: 10px; /* Space below the button */
+        }
+
         .card-img-top {
             height: 200px; /* Set a fixed height for images */
             object-fit: cover; 
@@ -91,7 +105,8 @@
                         <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-text">{{ item.description }}</p>
                         <p class="card-text"><strong>Rs. {{ item.price|floatformat:2 }}</strong></p>
-                        <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary">Add to Cart</a>
+                        <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary" style="width: 120px;">Add to Cart</a>
+
                     </div>
                 </div>
             </div>
