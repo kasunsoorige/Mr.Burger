@@ -22,7 +22,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ reservation.date }}</td>
-                <td>{{ reservation.time }}</td>
+                <td>{{ reservation.time|time:"h:i A" }}</td>
                 <td>{{ reservation.num_people }}</td>
                 <td>{{ reservation.space_preference }}</td>
                 <td>{{ reservation.customer_name }}</td>
