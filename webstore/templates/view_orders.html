@@ -100,7 +100,11 @@
                     {% if order_detail.shipping_details %}
                         <td>{{ order_detail.shipping_details.name }}</td>
                         <td>{{ order_detail.shipping_details.phone }}</td>
-                        <td>{{ order_detail.shipping_details.street1 }}</td>
+                        <td>
+                            {{ order_detail.shipping_details.house_no }} {{ order_detail.shipping_details.street1 }} 
+                            {% if order_detail.shipping_details.street2 %}, {{ order_detail.shipping_details.street2 }}{% endif %},
+                            {{ order_detail.shipping_details.town }}
+                        </td>
                     {% else %}
                         <td colspan="3">No shipping details available</td>
                     {% endif %}

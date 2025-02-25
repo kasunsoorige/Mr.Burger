@@ -4,6 +4,9 @@ import json
 
 from django.db import models
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # Create your models here.
 class Menu(models.Model):
     name = models.CharField(max_length=50)
@@ -82,3 +85,21 @@ class Reservation(models.Model):
     customer_email = models.EmailField()
     customer_phone = models.CharField(max_length=15)
 
+
+class Notification(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification for Order #{self.order.id}"
+
+# Signal to create a notification when a new order is placed
+@receiver(post_save, sender=Order)
+def create_order_notification(sender, instance, created, **kwargs):
+    if created:
+        Notification.objects.create(
+            order=instance,
+            message=f"New Order Received: Order #{instance.id}"
+        )

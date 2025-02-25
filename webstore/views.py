@@ -8,6 +8,8 @@ from .models import Menu,ShippingDetails,Order,OrderItem
 from .models import Menu
 from .models import Order
 from .models import Reservation
+from django.views.decorators.csrf import csrf_exempt
+from .models import Notification, Order
 
 # Create your views here.
 
@@ -310,3 +312,28 @@ def view_reservations(request):
 
 def reservation_success(request):
     return render(request, 'reservation_success.html')
+
+
+
+def admin_notifications(request):
+    notifications = Notification.objects.filter(is_read=False).order_by('-created_at')
+    return render(request, "admin_notification.html", {"notifications": notifications})
+
+
+@csrf_exempt  # Add this line to disable CSRF protection for this view
+def mark_notification_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+    notification.is_read = True
+    notification.save()
+    return JsonResponse({"success": True})
+
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Order  # Make sure you have the correct import if you're using an Order model
+
+def order_details(request, order_id):
+    # Retrieve the specific order from view_orders.html
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'order_details.html', {'order': order})
+
