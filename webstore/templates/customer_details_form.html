@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4 p-4 shadow rounded" style="background-color: #fff4e6;">
+<div class="container mt-4 p-4 shadow rounded" style="background-color: #eed97ee3;">
     <h1 class="text-center mb-4">Customer Details</h1>
     <form method="POST" action="{% url 'customer_details_form' %}" class="needs-validation" novalidate>
         {% csrf_token %}
