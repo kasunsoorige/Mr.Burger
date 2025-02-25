@@ -4,6 +4,18 @@
 <div class="container" style="background-color: #fff4e6; padding: 20px;">
     <h1 class="center" style="color: black; text-align: center;">Reservations</h1>
 
+    <form method="GET" action="{% url 'view_reservations' %}">
+        <div class="row">
+            <div class="col-md-8">
+                <input type="date" name="date" class="form-control" placeholder="Select Date">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{% url 'view_reservations' %}" class="btn btn-secondary">See All</a>
+            </div>
+        </div>
+    </form>
+
     {% if reservations %}
     <table class="table" style="width: 100%; margin-top: 20px; border-radius: 10px; overflow: hidden; background: #fff;">
         <thead>

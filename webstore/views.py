@@ -306,7 +306,12 @@ def customer_details_form(request):
 
 
 def view_reservations(request):
-    reservations = Reservation.objects.all()  # Get all reservations from the database
+    date_filter = request.GET.get('date')  # Get the date from query parameters
+    if date_filter:
+        reservations = Reservation.objects.filter(date=date_filter)  # Filter by date
+    else:
+        reservations = Reservation.objects.all()  # Get all reservations
+
     return render(request, 'view_reservations.html', {'reservations': reservations})
 
 
