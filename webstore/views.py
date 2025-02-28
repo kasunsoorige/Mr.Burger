@@ -10,6 +10,8 @@ from .models import Order
 from .models import Reservation
 from django.views.decorators.csrf import csrf_exempt
 from .models import Notification, Order
+from .models import Order
+from .forms import OrderForm
 
 # Create your views here.
 
@@ -342,3 +344,20 @@ def order_details(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order_details.html', {'order': order})
 
+
+
+
+
+
+def confirm_cancel(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'confirm_cancel.html', {'order': order})
+
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        order.delete()
+        return redirect('view_orders')  # Redirect to all orders after cancellation
+
+    return redirect('view_orders')  # Redirect if GET request is received (optional)

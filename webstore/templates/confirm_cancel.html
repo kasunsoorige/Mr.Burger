@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Cancellation</title>
+    <style>
+        body {
+            background-color: #eed97ee3; /* Set the background color for the entire page */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .btn-sm {
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            padding: 12px 20px; /* Same padding for both buttons */
+            box-sizing: border-box; /* Ensures padding doesn't affect the width */
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            margin-right: 10px;
+        }
+
+        .btn-danger:hover {
+            background: #b02a37;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Confirm Cancellation of Order #{{ order.id }}</h2>
+        <p>Are you sure you want to cancel this order? This action cannot be undone.</p>
+        <form method="POST" action="{% url 'delete_order' order.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
+        </form>
+    </div>
+</body>
+</html>
+

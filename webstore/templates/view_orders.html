@@ -12,7 +12,7 @@
         .center {
             text-align: center; /* Center the text */
         }
-        
+
         .table {
             width: 80%; /* Adjust width for centering */
             margin: 20px auto; /* Center the table */
@@ -42,18 +42,32 @@
             padding: 6px 12px;
             font-size: 14px;
             border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
-        .btn-warning {
-            background: #ffcc00;
-            color: #000;
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            margin-right: 5px;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
             border: none;
         }
 
-        .btn-warning:hover {
-            background: #e6b800;
+        .btn-danger:hover {
+            background: #b02a37;
         }
-        
+
         .status-update {
             display: flex; /* Use flexbox for alignment */
             align-items: center; /* Center align items vertically */
@@ -76,6 +90,7 @@
                 <th>Shipping Address</th>
                 <th>Items</th>
                 <th>Total Price</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -120,6 +135,11 @@
 
                     <!-- Total Price -->
                     <td>Rs.{{ order_detail.order.total_price|floatformat:2 }}</td>
+
+                    <!-- Cancel Button -->
+                    <td>
+                        <a href="{% url 'confirm_cancel' order_detail.order.id %}" class="btn btn-danger btn-sm">Cancel</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
