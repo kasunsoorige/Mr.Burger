@@ -3,6 +3,7 @@ from .import views
 from .views import view_orders
 from .views import admin_notifications, mark_notification_read
 from .views import order_details
+from .views import  delete_order
 
 urlpatterns = [
     path('', views.item_list, name='item_list'),
@@ -31,11 +32,13 @@ urlpatterns = [
 
     path("admin-notifications/", admin_notifications, name="admin_notifications"),
     path("mark-notification-read/<int:notification_id>/", mark_notification_read, name="mark_notification_read"),
+    path('order/<int:order_id>/', order_details, name='order_details'),
 
 
-   
 
-     path('order/<int:order_id>/', order_details, name='order_details'),
+    path('order/cancel/confirm/<int:order_id>/', views.confirm_cancel, name='confirm_cancel'),
+    path('order/delete/<int:order_id>/', views.delete_order, name='delete_order'),
+
 
 
 ]    

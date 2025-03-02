@@ -1,6 +1,7 @@
 from django import forms
 from .models import Menu,ShippingDetails
 
+from .models import Order
 
 class AddMenuForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"First Name", "class":"form-control"}), label="")
@@ -29,3 +30,10 @@ class ShippingForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
 
         }        
+
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status', 'total_price']
