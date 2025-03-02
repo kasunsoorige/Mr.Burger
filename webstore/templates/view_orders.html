@@ -4,70 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Orders</title>
-    <!-- Link to the CSS file 
-    {% load static %}
-<link rel="stylesheet" href="{% static 'css/main.css' %}"> -->
     <style>
-        .styled-table {
-            width: 100%; /* Make the table take the full width of its container */
-            border-collapse: collapse; /* Remove spacing between table cells */
-            margin: 20px 0; /* Add some spacing above and below the table */
-            font-size: 18px; /* Adjust font size */
-            text-align: left; /* Align text to the left */
-        } </style>
+        body {
+            background-color: #eed97ee3; /* Set the background color for the entire page */
+        }
+
+        .center {
+            text-align: center; /* Center the text */
+        }
+
+        .table {
+            width: 80%; /* Adjust width for centering */
+            margin: 20px auto; /* Center the table */
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table thead {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            margin-right: 5px;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: #b02a37;
+        }
+
+        .status-update {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center align items vertically */
+        }
+
+        .status-update select {
+            margin-right: 10px; /* Space between select and button */
+        }
+    </style>
 </head>
 <body>
-<h1>All Orders</h1>
-<table class="styled-table">
-    <thead>
-        
-        <tr>
-            <th>Order ID</th>
-            <th>Status</th>
-            <th>Customer Name</th>
-            <th>Phone</th>
-            <th>Shipping Address</th>
-            <th>Items</th>
-            <th>Total Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order_detail in order_details %}
+    <h2 class="center">All Orders</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ order_detail.order.id }}</td>
-                <td>
-                    <form method="POST" action="{% url 'update_order_status' order_detail.order.id %}">
-                        {% csrf_token %}
-                        <select name="status">
-                            <option value="In Progress" {% if order_detail.order.status == 'In Progress' %}selected{% endif %}>In Progress</option>
-                            <option value="Completed" {% if order_detail.order.status == 'Completed' %}selected{% endif %}>Completed</option>
-                            <option value="Canceled" {% if order_detail.order.status == 'Canceled' %}selected{% endif %}>Canceled</option>
-                        </select>
-                        <button type="submit">Update</button>
-                    </form>
-                </td>
-                
-                <!-- Display Shipping Details -->
-                {% if order_detail.shipping_details %}
-                    <td>{{ order_detail.shipping_details.name }}</td>
-                    <td>{{ order_detail.shipping_details.phone }}</td>
-                    <td>{{ order_detail.shipping_details.street1 }}</td>
-                {% else %}
-                    <td colspan="3">No shipping details available</td>
-                {% endif %}
-                
-                <!-- Display Order Items -->
-                <td>
-                    <ul>
-                        {% for item in order_detail.order_items %}
-                            <li> {{ item.item.name }} (x{{ item.quantity }}) - Rs.{{ item.item.price|floatformat:2 }} </li>
-                        {% endfor %}
-                    </ul>
-                </td>
-
-                <!-- Total Price -->
-                <td> Rs.{{ order_detail.order.total_price|floatformat:2 }}</td>
+                <th>Order ID</th>
+                <th>Status</th>
+                <th>Customer Name</th>
+                <th>Phone</th>
+                <th>Shipping Address</th>
+                <th>Items</th>
+                <th>Total Price</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for order_detail in order_details %}
+                <tr>
+                    <td>{{ order_detail.order.id }}</td>
+                    <td>
+                        <div class="status-update">
+                            <form method="POST" action="{% url 'update_order_status' order_detail.order.id %}">
+                                {% csrf_token %}
+                                <select name="status">
+                                    <option value="In Progress" {% if order_detail.order.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="Completed" {% if order_detail.order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                    <option value="Canceled" {% if order_detail.order.status == 'Canceled' %}selected{% endif %}>Canceled</option>
+                                </select>
+                                <button type="submit" class="btn btn-warning btn-sm">Update</button>
+                            </form>
+                        </div>
+                    </td>
+                    
+                    <!-- Display Shipping Details -->
+                    {% if order_detail.shipping_details %}
+                        <td>{{ order_detail.shipping_details.name }}</td>
+                        <td>{{ order_detail.shipping_details.phone }}</td>
+                        <td>
+                            {{ order_detail.shipping_details.house_no }} {{ order_detail.shipping_details.street1 }} 
+                            {% if order_detail.shipping_details.street2 %}, {{ order_detail.shipping_details.street2 }}{% endif %},
+                            {{ order_detail.shipping_details.town }}
+                        </td>
+                    {% else %}
+                        <td colspan="3">No shipping details available</td>
+                    {% endif %}
+                    
+                    <!-- Display Order Items -->
+                    <td>
+                        <ul>
+                            {% for item in order_detail.order_items %}
+                                <li>{{ item.item.name }} (x{{ item.quantity }}) - Rs.{{ item.item.price|floatformat:2 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                    <!-- Total Price -->
+                    <td>Rs.{{ order_detail.order.total_price|floatformat:2 }}</td>
+
+                    <!-- Cancel Button -->
+                    <td>
+                        <a href="{% url 'confirm_cancel' order_detail.order.id %}" class="btn btn-danger btn-sm">Cancel</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

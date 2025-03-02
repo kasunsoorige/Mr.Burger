@@ -8,6 +8,10 @@ from .models import Menu,ShippingDetails,Order,OrderItem
 from .models import Menu
 from .models import Order
 from .models import Reservation
+from django.views.decorators.csrf import csrf_exempt
+from .models import Notification, Order
+from .models import Order
+from .forms import OrderForm
 
 # Create your views here.
 
@@ -192,7 +196,7 @@ def manage_menu(request):
 def edit_menu(request, item_id):
     item = get_object_or_404(Menu, id=item_id)
     if request.method == 'POST':
-        form = AddMenuForm(request.POST, instance=item)
+        form = AddMenuForm(request.POST, request.FILES, instance=item)  # Include request.FILES here
         if form.is_valid():
             form.save()
             return redirect('manage_menu')
@@ -304,9 +308,56 @@ def customer_details_form(request):
 
 
 def view_reservations(request):
-    reservations = Reservation.objects.all()  # Get all reservations from the database
+    date_filter = request.GET.get('date')  # Get the date from query parameters
+    if date_filter:
+        reservations = Reservation.objects.filter(date=date_filter)  # Filter by date
+    else:
+        reservations = Reservation.objects.all()  # Get all reservations
+
     return render(request, 'view_reservations.html', {'reservations': reservations})
 
 
 def reservation_success(request):
     return render(request, 'reservation_success.html')
+
+
+
+def admin_notifications(request):
+    notifications = Notification.objects.filter(is_read=False).order_by('-created_at')
+    return render(request, "admin_notification.html", {"notifications": notifications})
+
+
+@csrf_exempt  # Add this line to disable CSRF protection for this view
+def mark_notification_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+    notification.is_read = True
+    notification.save()
+    return JsonResponse({"success": True})
+
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Order  # Make sure you have the correct import if you're using an Order model
+
+def order_details(request, order_id):
+    # Retrieve the specific order from view_orders.html
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'order_details.html', {'order': order})
+
+
+
+
+
+
+def confirm_cancel(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'confirm_cancel.html', {'order': order})
+
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        order.delete()
+        return redirect('view_orders')  # Redirect to all orders after cancellation
+
+    return redirect('view_orders')  # Redirect if GET request is received (optional)

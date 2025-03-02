@@ -1,39 +1,130 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-
-
-    {% endfor %}
-  {% endif %}
     
-    <div class="row">
-        <h1> Our menus </h1>
-        {% for item in items %}
-        <div class="col-md-4">
-            <div class="card">
-                <img src="{{ item.img_url.url }}" class="card-img-top" alt="{{ item.name }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ item.name }}</h5>
-                    <p class="card-text">{{ item.description }}</p>
-                    <p class="card-text"><strong>Rs.{{ item.price }}</strong></p>
-                    <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary">Add to Cart</a>
-                </div>
-                <!-- url 'add_to_cart' item.id  --->
-            </div>
-            
-        </div>
-        {% endfor %}
+    {% load static %}
+    <style>
+
+
+        body {
+            background-image: url("{% static 'images/bg.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .logo {
+            display: grid;
+            justify-content: center; 
+            background-color: #000000;
+        }
+        .logo img {
+            padding-top: 10px;
+            height: auto;
+        }
+        .card-img-top {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-img-top:hover {
+    transform: scale(1.1);
+}
+
+        .tagline {
+            font-family: fantasy; 
+            font-size: 10rem; 
+            color: #000000; 
+            text-align: center; 
+            margin-top: 5px; 
+        }
+        .details {
+            font-family: 'Arial', sans-serif; 
+            font-size: 1.5rem; 
+            color: #333; 
+            text-align: center; 
+            margin-top: 10px; 
+        }
+        .details i {
+            color: #000000;
+            margin-right: 5px; 
+        }
+        .locations {
+            font-family: monospace; 
+            font-size: 1rem; 
+            color: #ffffff; 
+            text-align: center; 
+            margin-top: 10px; 
+        }
+        .card {
+            height: 100%; /* Allow the card to fill the column height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px; /* Space between cards */
+            border: none; /* Remove default card border */
+        }
+
+        .card-body {
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between;
+        }
+
+       .add-to-cart-btn {
+           width: auto; /* Makes the button fit its content */
+           padding: 5px 10px; /* Adjusts the padding for a shorter button */
+           margin-top: auto; /* Keeps the button at the bottom of the card */
+           margin-bottom: 10px; /* Space below the button */
+        }
+
+        .card-img-top {
+            height: 200px; /* Set a fixed height for images */
+            object-fit: cover; 
+        }
+        .bg-light-orange {
+            background-color: #eed97ee3; /* Lightest orange */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin: 40px 0;
+        }
+    </style>
+
+    <div class="test">
+        <h1 class="tagline">Savor the Flavor, Bite the Burger</h1>
+        <p class="details">
+            Limited menu items are showing.<br> 
+            Contact the Restaurant to see the Full Menu & Order. <br>
+            <i class="bi bi-telephone-fill"></i> +94 71 123 4567, <i class="bi bi-telephone-fill"></i> +94 72 987 6543
+        </p>
     </div>
-</div>
-<div>
-      <!-- Table Reservation Form -->
-      <div>
+
+    <div class="section bg-light-orange">
+        <h1>Our Menus</h1>
+        <div class="row">
+            {% for item in items %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ item.img_url.url }}" class="card-img-top" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text">{{ item.description }}</p>
+                        <p class="card-text"><strong>Rs. {{ item.price|floatformat:2 }}</strong></p>
+                        <a href="{% url 'add_to_cart' item.id %}" class="btn btn-primary" style="width: 120px;">Add to Cart</a>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section bg-light-orange">
         <h1>Book a Table</h1>
         <form method="POST" action="{% url 'book_table' %}">
             {% csrf_token %}
@@ -41,23 +132,22 @@
                 <label for="date" class="form-label">Select Date</label>
                 <input type="date" class="form-control" id="date" name="reservation_date" required>
             </div>
-    
             <div class="mb-3">
                 <label for="time" class="form-label">Select Time</label>
                 <select class="form-select" id="time" name="reservation_time" required>
+                    <option value="10:00">10:00 AM</option>
                     <option value="11:00">11:00 AM</option>
                     <option value="12:00">12:00 PM</option>
-                    <option value="1:00">1:00 PM</option>
-                    <option value="2:00">2:00 PM</option>
-                    <option value="3:00">3:00 PM</option>
-                    <option value="4:00">4:00 PM</option>
-                    <option value="5:00">5:00 PM</option>
-                    <option value="6:00">6:00 PM</option>
-                    <option value="7:00">7:00 PM</option>
-                    <option value="7:30">7:30 PM</option>
+                    <option value="13:00">1:00 PM</option>
+                    <option value="14:00">2:00 PM</option>
+                    <option value="15:00">3:00 PM</option>
+                    <option value="16:00">4:00 PM</option>
+                    <option value="17:00">5:00 PM</option>
+                    <option value="18:00">6:00 PM</option>
+                    <option value="19:00">7:00 PM</option>
+                    <option value="19:30">7:30 PM</option>
                 </select>
             </div>
-    
             <div class="mb-3">
                 <label for="people" class="form-label">Number of People</label>
                 <select class="form-select" id="people" name="num_people" required>
@@ -73,7 +163,6 @@
                     <option value="20">20</option>
                 </select>
             </div>
-    
             <div class="mb-3">
                 <label for="space_preference" class="form-label">Space Preference</label>
                 <select class="form-select" id="space_preference" name="space_preference" required>
@@ -81,11 +170,17 @@
                     <option value="Outside">Outside</option>
                 </select>
             </div>
-    
             <button type="submit" class="btn btn-primary">Book Table</button>
         </form>
     </div>
-    </div>
-    
-    {% endblock %}
-    
+</div>
+
+<div class="logo">
+    <img src="{% static 'static/M.png.png' %}" alt="Mr. Burger Logo" style="max-height: 100px;">
+    <p class="locations">
+      95 Galle <br> Colombo Rd<br> Colombo 00400 <br>
+      <i class="bi bi-telephone-fill"></i> +94 71 123 4567
+    </p>
+</div>
+
+{% endblock %}
