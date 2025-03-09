@@ -1,63 +1,26 @@
-<nav style="background-color: #f8f9fa; padding: 10px;">
-  <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
-    {% load static %} 
-    <a href="{% url 'home' %}">
-      <img src="{% static 'static/logo.png' %}" alt="Mr Burger Logo" style="width: 100px;">
-    </a>
-    <div>
-      <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 20px; justify-content: space-evenly;">
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-             onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-             onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Order Online</a>
-        </li> 
-        <li class="nav-item" style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Our Menu</a>
-        </li>
-        <li class="nav-item" style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Rewards</a>
-        </li> 
-        <li class="nav-item" style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">About Us</a>
-        </li> 
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">Mr Burger</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
         {% if user.is_authenticated %}
-        {% if user.is_superuser %}
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'dash' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Dashboard</a>
-        </li>
-        {% endif %}
+      
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'my_orders' %}">My Orders</a>
+          <a class="nav-link" href="{% url 'dash' %}">Dashboard</a>
         </li>
-
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'logout' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Logout</a>
-        </li>
-        <li style="color: #000000; font-size: 16px; padding: 10px 15px;">Welcome, {{ user.username }}!</li>
         {% else %}
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'login' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Login</a>
-        </li>
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'signup' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Sign Up</a>
-        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Login</a>
+        </li>        
         {% endif %}
-      </ul>   
+        
+        
+      </ul>
+      
     </div>
   </div>
 </nav>
