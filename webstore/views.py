@@ -12,8 +12,73 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Notification, Order
 from .models import Order
 from .forms import OrderForm
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Order
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm
 
 # Create your views here.
+
+@login_required
+def my_orders(request):
+    # Fetch orders for the logged-in user
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'my_orders.html', {'orders': orders})
+
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.set_password(form.cleaned_data['password'])
+            new_user.save()
+            return render(request, 'myapp/register_done.html', {'new_user': new_user})
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'myapp/register.html', {'form': form})
+
+
+
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login page after signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # Redirect to home page after login
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    return render(request, 'login.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')  # Redirect to home page after logout
+
+
 
 def home(request):
     if request.method == 'POST':
@@ -141,10 +206,17 @@ def remove_from_cart(request):
 
 
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .models import Order, OrderItem, Menu
+from .forms import ShippingForm
+
 def place_order(request):
+    # Get the cart from the session
     cart = request.session.get('cart', {})
     total_price = sum(float(item['price']) * int(item['quantity']) for item in cart.values())
 
+    # Check if the cart is empty
     if not cart:
         messages.error(request, "Your cart is empty.")
         return redirect('cart')
@@ -152,8 +224,11 @@ def place_order(request):
     if request.method == 'POST':
         form = ShippingForm(request.POST)
         if form.is_valid():
-            # Create a new Order with total_price
-            order = Order.objects.create(total_price=total_price)
+            # Create a new Order with total_price and the logged-in user
+            order = Order.objects.create(
+                total_price=total_price,
+                user=request.user if request.user.is_authenticated else None  # Associate the user if logged in
+            )
 
             # Save each item in the cart as an OrderItem
             for item_id, item_data in cart.items():
@@ -186,8 +261,6 @@ def place_order(request):
         form = ShippingForm()
 
     return render(request, 'shipping_form.html', {'form': form, 'total_price': total_price})
-
-
 
 def manage_menu(request):
     items = Menu.objects.all()

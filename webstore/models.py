@@ -1,11 +1,12 @@
 from django.db import models
 import json
-
-
 from django.db import models
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import User  # Import the User model
+from django.db import models
+from django.conf import settings
+
 
 # Create your models here.
 class Menu(models.Model):
@@ -19,6 +20,12 @@ class Menu(models.Model):
 
 
 class Order(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,  # Allow null values
+        blank=True,  # Allow blank values in forms
+    ) # Link order to user
     items = models.TextField()  # Use for sqlite
     # items = models.JSONField()  # Uncomment for MySQL to store cart items in JSON format
     order_date = models.DateTimeField(auto_now_add=True)
@@ -28,10 +35,14 @@ class Order(models.Model):
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Incomplete')
     total_price = models.FloatField(default=0)
+
     def __str__(self):
         return f"Order #{self.id} - {self.status}"
-
     
+
+
+
+
 
     # To save the items as JSON for SQLite (only needed if using SQLite)
     def save(self, *args, **kwargs):
