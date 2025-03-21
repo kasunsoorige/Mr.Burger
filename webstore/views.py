@@ -18,8 +18,74 @@ from .models import Order
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
 from .models import UserProfile
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Order
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm
+from .models import UserProfile
 
 # Create your views here.
+
+@login_required
+def my_orders(request):
+    # Fetch orders for the logged-in user
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'my_orders.html', {'orders': orders})
+
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.set_password(form.cleaned_data['password'])
+            new_user.save()
+            return render(request, 'myapp/register_done.html', {'new_user': new_user})
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'myapp/register.html', {'form': form})
+
+
+
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login page after signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # Redirect to home page after login
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    return render(request, 'login.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')  # Redirect to home page after logout
+
+
 
 @login_required
 def my_orders(request):
@@ -212,10 +278,20 @@ from django.shortcuts import render, redirect
 from .models import Order, OrderItem, Menu
 from .forms import ShippingForm
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .models import Order, OrderItem, Menu
+from .forms import ShippingForm
+
 def place_order(request):
+    # Get the cart from the session
     # Get the cart from the session
     cart = request.session.get('cart', {})
     total_price = sum(float(item['price']) * int(item['quantity']) for item in cart.values())
+    
+    
+
+    # Check if the cart is empty
     
     
 
@@ -227,6 +303,12 @@ def place_order(request):
     if request.method == 'POST':
         form = ShippingForm(request.POST)
         if form.is_valid():
+            # Create a new Order with total_price and the logged-in user
+            order = Order.objects.create(
+                total_price=total_price,
+                user=request.user if request.user.is_authenticated else None  # Associate the user if logged in
+                
+            )
             # Create a new Order with total_price and the logged-in user
             order = Order.objects.create(
                 total_price=total_price,
@@ -251,6 +333,13 @@ def place_order(request):
             shipping_details = form.save(commit=False)
             shipping_details.order = order
             shipping_details.save()
+
+                        # Update loyalty points for the user
+            if request.user.is_authenticated:
+                user_profile = UserProfile.objects.get(user=request.user)
+                loyalty_points = total_price * 0.05  # 5% of the order amount
+                user_profile.loyalty_points += loyalty_points
+                user_profile.save()
 
                         # Update loyalty points for the user
             if request.user.is_authenticated:
@@ -346,6 +435,8 @@ from .models import Reservation
 
 from .models import  Table
 
+from .models import  Table
+
 def book_table(request):
     if request.method == "POST":
         # Collect reservation details from the initial form
@@ -354,13 +445,17 @@ def book_table(request):
         num_people = request.POST.get("num_people")
         tables = request.POST.getlist("tables")  # Get list of selected tables
 
+        tables = request.POST.getlist("tables")  # Get list of selected tables
+
         # Save these details in the session temporarily
         request.session['reservation_details'] = {
             "date": reservation_date,
             "time": reservation_time,
             "num_people": num_people,
             "tables": tables,  # Store list of tables
+            "tables": tables,  # Store list of tables
         }
+
 
         # Redirect to the customer details form
         return redirect('customer_details_form')
@@ -375,7 +470,10 @@ def customer_details_form(request):
         customer_email = request.POST.get('email')
         customer_phone = request.POST.get('phone')
         selected_tables = request.POST.getlist('tables')  # Get list of selected table numbers
+        selected_tables = request.POST.getlist('tables')  # Get list of selected table numbers
 
+        # Create the reservation
+        reservation = Reservation.objects.create(
         # Create the reservation
         reservation = Reservation.objects.create(
             date=reservation_details.get("date"),
@@ -386,6 +484,12 @@ def customer_details_form(request):
             customer_phone=customer_phone,
         )
 
+        # Add selected tables to the reservation
+        for table_number in selected_tables:
+            table, created = Table.objects.get_or_create(number=table_number)
+            reservation.tables.add(table)
+
+        messages.success(request, "Your tables have been reserved!")
         # Add selected tables to the reservation
         for table_number in selected_tables:
             table, created = Table.objects.get_or_create(number=table_number)
