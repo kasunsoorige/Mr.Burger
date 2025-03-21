@@ -1,7 +1,27 @@
 from django import forms
 from .models import Menu,ShippingDetails
+from django.contrib.auth.models import User
 
 from .models import Order
+
+
+
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('Passwords don\'t match.')
+        return cd['password2']
+    
+
+    
 
 class AddMenuForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder":"First Name", "class":"form-control"}), label="")

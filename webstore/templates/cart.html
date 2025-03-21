@@ -19,7 +19,7 @@
     }
 </style>
 
-<div class="container">
+<div class="container" section id="cart">
 
 
     <div class="cart-container">
@@ -55,7 +55,7 @@
             </table>
 
             <h3>Total: Rs.<span id="order-total">{{ total_price|floatformat:2 }}</span></h3>
-            <button class="btn btn-success" onclick="location.href='{% url 'place_order' %}'">Proceed</button>
+            <a href="{% url 'place_order' %}" class="btn btn-success">Proceed</a>
             <a href="{% url 'item_list' %}" class="btn btn-secondary">Add more</a>
         {% else %}
             <p>Your cart is empty.</p>

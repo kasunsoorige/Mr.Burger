@@ -5,7 +5,6 @@
     {% load static %}
     <style>
 
-
         body {
             background-image: url("{% static 'images/bg.png' %}");
             background-size: cover;
@@ -17,9 +16,9 @@
             justify-content: center; 
             background-color: #000000;
         }
-        .logo img {
-            padding-top: 10px;
-            height: auto;
+        .footer {
+            background-color: #f1f1f1;
+            padding: 10px;
         }
         .card-img-top {
     transition: transform 0.3s ease-in-out;
@@ -93,7 +92,159 @@
         .section {
             margin: 40px 0;
         }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #D2D2D2;
+            background-image:
+            repeating-linear-gradient(
+                to right, transparent 0 100px,
+                #25283b22 100px 101px
+            ),
+            repeating-linear-gradient(
+                to bottom, transparent 0 100px,
+                #25283b22 100px 101px
+            );
+        }
+        
+        body::before{
+            position: absolute;
+            width: min(1400px, 90vw);
+            top: 10%;
+            left: 50%;
+            height: 90%;
+            transform: translateX(-50%);
+            content: '';
+            background-image: url(images/bg.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: top center;
+            pointer-events: none;
+        }
+    /*3D Slider styles*/
+
+
+    .banner{
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+    }
+    .banner .slider{
+        position: absolute;
+        width: 200px;
+        height: 250px;
+        top: 10%;
+        left: calc(50% - 100px);
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+        animation: autoRun 20s linear infinite;
+        z-index: 2;
+    }
+    @keyframes autoRun{
+        from{
+            transform: perspective(1000px) rotateX(-10deg) rotateY(0deg);
+        }to{
+            transform: perspective(1000px) rotateX(-5deg) rotateY(360deg);
+        }
+    }
+
+    .banner .slider .item{
+        position: absolute;
+        inset: 0 0 0 0;
+        transform: 
+            rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(550px);
+    }
+    .banner .slider .item img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .banner .content{
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1400px, 100vw);
+        height: max-content;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1;
+    }
+
+    
+
+
+    /* Styles for Table Reservation */
+/* Container styling */
+    .container {
+    
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    transition: background-image 0.5s ease;
+    }
+
+    /* Grid styling */
+    .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 300px; /* Reduced gap for better spacing */
+    padding: 30px; /* Add padding to the grid */
+    }
+
+    .grid label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px; /* Add padding to grid cells */
+    }
+
+    .grid input[type="checkbox"] {
+    transform: scale(2); /* Adjust checkbox size */
+    margin: 0; /* Remove margin to center the checkbox */
+    }
+
+    /* Dropdown styling */
+    .dropdown {
+    margin-bottom: 20px;
+    text-align: center; /* Center the dropdown */
+    }
+
+    .dropdown select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px; /* Set a fixed width for the dropdown */
+    }
+
+    /* Additional styles for the reservation section */
+    .resrve {
+    width: 30%;
+    float: left;
+    padding: 20px;
+    }
+
+    .section.bg-light-orange {
+    overflow: auto;
+    padding: 20px;
+    }
+
+
     </style>
+
 
     <div class="test">
         <h1 class="tagline">Savor the Flavor, Bite the Burger</h1>
@@ -104,7 +255,30 @@
         </p>
     </div>
 
-    <div class="section bg-light-orange">
+<div class="banner">
+    <div class="slider" style="--quantity: 15">
+        <div class="item" style="--position: 1"><img src="{% static 'static/burger3.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 2"><img src="{% static 'static/slider1.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 3"><img src="{% static 'static/burger2.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 4"><img src="{% static 'static/slider2.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 5"><img src="{% static 'static/rice1.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 6"><img src="{% static 'static/slider3.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 7"><img src="{% static 'static/rice4.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 8"><img src="{% static 'static/slider4.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 9"><img src="{% static 'static/rice3.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 10"><img src="{% static 'static/slider5.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 11"><img src="{% static 'static/rice3.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 12"><img src="{% static 'static/slider5.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 13"><img src="{% static 'static/slider2.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 14"><img src="{% static 'static/rice1.jpg' %}" alt=""></div>
+        <div class="item" style="--position: 15"><img src="{% static 'static/slider3.jpg' %}" alt=""></div>
+    </div>
+    
+</div>
+
+
+
+    <div class="section bg-light-orange"section id="ourmenu">
         <h1>Our Menus</h1>
         <div class="row">
             {% for item in items %}
@@ -124,63 +298,116 @@
         </div>
     </div>
 
-    <div class="section bg-light-orange">
-        <h1>Book a Table</h1>
-        <form method="POST" action="{% url 'book_table' %}">
+    <div class="section bg-light-orange" style="overflow:auto;" section id="reservation">
+        <div class="resrve">
+          <h1>Book a Table</h1>
+          <form method="POST" action="{% url 'book_table' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="date" class="form-label">Select Date</label>
-                <input type="date" class="form-control" id="date" name="reservation_date" required>
+              <label for="date" class="form-label">Select Date</label>
+              <input type="date" class="form-control" id="date" name="reservation_date" required>
             </div>
             <div class="mb-3">
-                <label for="time" class="form-label">Select Time</label>
-                <select class="form-select" id="time" name="reservation_time" required>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                    <option value="13:00">1:00 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                    <option value="17:00">5:00 PM</option>
-                    <option value="18:00">6:00 PM</option>
-                    <option value="19:00">7:00 PM</option>
-                    <option value="19:30">7:30 PM</option>
-                </select>
+              <label for="time" class="form-label">Select Time</label>
+              <select class="form-select" id="time" name="reservation_time" required>
+                <option value="10:00">10:00 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="13:00">1:00 PM</option>
+                <option value="14:00">2:00 PM</option>
+                <option value="15:00">3:00 PM</option>
+                <option value="16:00">4:00 PM</option>
+                <option value="17:00">5:00 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="19:30">7:30 PM</option>
+              </select>
             </div>
             <div class="mb-3">
-                <label for="people" class="form-label">Number of People</label>
-                <select class="form-select" id="people" name="num_people" required>
-                    <option value="2">2</option>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                    <option value="18">18</option>
-                    <option value="20">20</option>
-                </select>
+              <label for="people" class="form-label">Number of People</label>
+              <select class="form-select" id="people" name="num_people" required>
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+
+              </select>
             </div>
-            <div class="mb-3">
-                <label for="space_preference" class="form-label">Space Preference</label>
-                <select class="form-select" id="space_preference" name="space_preference" required>
-                    <option value="Inside">Inside</option>
-                    <option value="Outside">Outside</option>
-                </select>
+            
+        </div>
+      
+        <div style="width: 70%; float: left; padding: 10px;">
+          <div class="dropdown">
+            <select id="floor-select">
+              <option value="ground">Ground Floor</option>
+              <option value="first">First Floor</option>
+            </select>
+          </div>
+      
+          <form method="post" action="{% url 'customer_details_form' %}">
+            
+            <div class="container" id="floor-container">
+                <div class="grid">
+                    <label><input type="checkbox" name="tables" value="1"></label>
+                    <label><input type="checkbox" name="tables" value="2"></label>
+                    <label><input type="checkbox" name="tables" value="3"></label>
+                    <label><input type="checkbox" name="tables" value="4"></label>
+                    <label><input type="checkbox" name="tables" value="5"></label>
+                    <label><input type="checkbox" name="tables" value="6"></label>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Book Table</button>
         </form>
-    </div>
+        </form>
+        </div>
+      </div>
+
+
+
 </div>
 
-<div class="logo">
-    <img src="{% static 'static/M.png.png' %}" alt="Mr. Burger Logo" style="max-height: 100px;">
-    <p class="locations">
-      95 Galle <br> Colombo Rd<br> Colombo 00400 <br>
-      <i class="bi bi-telephone-fill"></i> +94 71 123 4567
-    </p>
-</div>
+<div class="footer" style="width: 100%; display: inline-flex; justify-content: space-around;">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'static/logo.png' %}" alt="Mr Burger Logo" style="width: 100px;">
+    </a>
+    <p style="padding: 20px;">Privacy Policy</p>
+    <p style="padding: 20px;">Web Accessibility</p>
+    <p style="padding: 20px;">Site Map</p>
+    <p style="padding: 20px;">© 2025 Mr.Burger All Rights Reserved.</p>
+
+  </div>
+  <script>
+    const floorBackgrounds = {
+    ground: "{% static 'static/tablemap3.jpg' %}",
+    first: "{% static 'static/tablemap4.jpg' %}",
+    };
+
+    const floorContainer = document.getElementById('floor-container');
+    const floorSelect = document.getElementById('floor-select');
+
+    // Set initial background image
+    floorContainer.style.backgroundImage = `url(${floorBackgrounds.ground})`;
+
+    // Add event listener to dropdown
+    floorSelect.addEventListener('change', function () {
+    const selectedFloor = floorSelect.value;
+    floorContainer.style.backgroundImage = `url(${floorBackgrounds[selectedFloor]})`;
+    });
+
+    document.querySelectorAll('input[name="tables"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        // Collect all selected table values
+        const selectedTables = Array.from(document.querySelectorAll('input[name="tables"]:checked'))
+            .map(checkbox => checkbox.value)
+            .join(',');  // Convert to a comma-separated string
+
+        // Update the hidden input field
+        document.getElementById('selected_tables').value = selectedTables;
+    });
+    });
+
+
+
+  </script>
 
 {% endblock %}
