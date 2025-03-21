@@ -464,7 +464,6 @@ def rewards(request):
 
     return render(request, 'rewards.html', {'loyalty_points': loyalty_points})
 
-
 def privacy_policy(request):
     return render(request, 'privacy_policy.html')
 
@@ -484,3 +483,6 @@ def feedback_view(request):
         form = FeedbackForm()
     
     return render(request, 'feedback.html', {'form': form})
+
+def about(request):
+    return render(request, 'about.html')
