@@ -44,6 +44,6 @@ urlpatterns = [
 
     path('rewards/', views.rewards, name='rewards'),
 
-
+    path('about/', views.about, name='about'),
 
 ]    
