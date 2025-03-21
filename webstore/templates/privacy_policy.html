@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    /* Container for the privacy policy */
+    .privacy-policy-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Title of the privacy policy */
+    .privacy-policy-title {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    /* Last updated text */
+    .last-updated {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    /* Section titles */
+    .section-title {
+        font-size: 1.8rem;
+        color: #34495e;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 10px;
+    }
+
+    /* Policy list */
+    .policy-list {
+        padding-left: 20px;
+        list-style-type: disc;
+        color: #555;
+    }
+
+    .policy-list li {
+        margin-bottom: 10px;
+    }
+
+    /* Paragraphs */
+    .policy-section p {
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    /* Strong text for emphasis */
+    strong {
+        color: #2c3e50;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .privacy-policy-container {
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .privacy-policy-title {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="privacy-policy-container">
+    <h1 class="privacy-policy-title">Privacy Policy</h1>
+    <p class="last-updated">Last Updated: <strong>21 March 2025</strong></p>
+    
+    <section class="policy-section">
+        <h2 class="section-title">1. Information We Collect</h2>
+        <p>We collect personal data when you:</p>
+        <ul class="policy-list">
+            <li>Create an account (name, email, phone number, password)</li>
+            <li>Place an online order (delivery address, payment preferences)</li>
+            <li>Make a table reservation (name, contact number, guests, reservation time)</li>
+            <li>Contact us for support</li>
+        </ul>
+        <p>We also collect non-personal data such as browser type, IP address, and usage patterns.</p>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">2. How We Use Your Information</h2>
+        <ul class="policy-list">
+            <li>Process orders and reservations</li>
+            <li>Improve user experience</li>
+            <li>Enhance security and fraud prevention</li>
+            <li>Respond to customer inquiries</li>
+            <li>Send promotions (only if opted-in)</li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">3. Data Protection</h2>
+        <p>We use secure encryption and restricted access to protect your personal data, but no system is 100% secure.</p>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">4. Sharing Information</h2>
+        <p>We do <strong>not</strong> sell or trade your data. We only share information with:</p>
+        <ul class="policy-list">
+            <li>Service providers (payment gateways, delivery partners)</li>
+            <li>Legal authorities when required</li>
+        </ul>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">5. Cookies & Tracking</h2>
+        <p>We use cookies to enhance user experience. You can disable cookies in your browser settings.</p>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">6. Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul class="policy-list">
+            <li>Access, update, or delete your personal data</li>
+            <li>Opt out of marketing communications</li>
+            <li>Disable cookies</li>
+        </ul>
+        <p>For data-related inquiries, contact us at <strong>mrburger@hotmail.com</strong>.</p>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">7. Updates to this Policy</h2>
+        <p>We may update this policy. Changes will be posted on this page.</p>
+    </section>
+    
+    <section class="policy-section">
+        <h2 class="section-title">8. Contact Us</h2>
+        <p>If you have questions, contact us:</p>
+        <p><strong>Email:</strong> mrburger@hotmail.com</p>
+        <p><strong>Phone:</strong> +94 711234567, +94 729876543</p>
+        <p><strong>Address:</strong> No 95, Galle Road, Bambalapitiya.</p>
+    </section>
+</div>
+{% endblock %}

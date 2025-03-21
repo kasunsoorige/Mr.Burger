@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 
 from .models import Order
 
+from .models import Feedback
+
+
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -57,3 +60,18 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['status', 'total_price']
+
+
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'phone_number', 'email', 'branch_location', 'feedback']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Phone Number'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email Address'}),
+            'branch_location': forms.Select(attrs={'placeholder': 'Branch Location'}),
+            'feedback': forms.Textarea(attrs={'placeholder': 'Enter your feedback...', 'rows': 4}),
+        }

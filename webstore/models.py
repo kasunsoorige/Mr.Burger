@@ -134,3 +134,23 @@ def create_order_notification(sender, instance, created, **kwargs):
             order=instance,
             message=f"New Order Received: Order #{instance.id}"
         )
+
+
+
+class Feedback(models.Model):
+    BRANCH_CHOICES = [
+        ('Bambalapitiya', 'Bambalapitiya'),
+        ('Rajagiriya', 'Rajagiriya'),
+    ]
+
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15)
+    email = models.EmailField()
+    branch_location = models.CharField(max_length=50, choices=BRANCH_CHOICES)
+    feedback = models.TextField(max_length=180)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback from {self.name} at {self.branch_location}"
+    
+    

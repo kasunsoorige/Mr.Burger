@@ -4,6 +4,7 @@ from .views import view_orders
 from .views import admin_notifications, mark_notification_read
 from .views import order_details
 from .views import  delete_order
+from .views import privacy_policy
 
 urlpatterns = [
     path('', views.item_list, name='item_list'),
@@ -43,6 +44,8 @@ urlpatterns = [
     path('order/delete/<int:order_id>/', views.delete_order, name='delete_order'),
 
     path('rewards/', views.rewards, name='rewards'),
+    path('privacy-policy/', privacy_policy, name='privacy_policy'),
+    path('feedback/', views.feedback_view, name='feedback'),
 
 
 

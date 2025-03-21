@@ -463,3 +463,24 @@ def rewards(request):
         loyalty_points = user_profile.loyalty_points
 
     return render(request, 'rewards.html', {'loyalty_points': loyalty_points})
+
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import FeedbackForm
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Thank you for your feedback!')
+            return redirect('feedback')  # Redirect to the same page after submission
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'feedback.html', {'form': form})
