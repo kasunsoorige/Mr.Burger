@@ -23,19 +23,12 @@
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Rewards</a>
         </li> 
         <li class="nav-item" style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'about' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
+          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
           onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">About Us</a>
-      </li>
+        </li> 
 
         {% if user.is_authenticated %}
-        {% if user.is_superuser %}
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'dash' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Dashboard</a>
-        </li>
-        {% endif %}
         {% if user.is_superuser %}
         <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
           <a href="{% url 'dash' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
@@ -51,15 +44,7 @@
           <a href="{% url 'logout' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
           onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Logout</a>
-          <a class="nav-link" href="{% url 'my_orders' %}">My Orders</a>
         </li>
-
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'logout' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Logout</a>
-        </li>
-        <li style="color: #000000; font-size: 16px; padding: 10px 15px;">Welcome, {{ user.username }}!</li>
         <li style="color: #000000; font-size: 16px; padding: 10px 15px;">Welcome, {{ user.username }}!</li>
         {% else %}
         <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
@@ -72,20 +57,8 @@
           onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Sign Up</a>
         </li>
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'login' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Login</a>
-        </li>
-        <li style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="{% url 'signup' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
-          onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
-          onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Sign Up</a>
-        </li>
         {% endif %}
-      </ul>   
       </ul>   
     </div>
   </div>
 </nav>
-

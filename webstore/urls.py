@@ -8,7 +8,6 @@ from .views import  delete_order
 urlpatterns = [
     path('', views.item_list, name='item_list'),
     path('', views.home, name='home'),
-    path('', views.home, name='home'),
     path('dash',views.dash,name='dash'),
     path('add_menu', views.add_menu, name='add_menu'),
     path('add-to-cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
@@ -24,7 +23,6 @@ urlpatterns = [
     path('dashboard/orders', views.view_orders, name='view_orders'),  # Correct URL pattern
     path('dashboard/orders/update/<int:order_id>/', views.update_order_status, name='update_order_status'),
     path('my-orders/', views.my_orders, name='my_orders'),
-    path('my-orders/', views.my_orders, name='my_orders'),
     path('book_table/', views.book_table, name='book_table'),
     path('item_list/', views.item_list, name='item_list'),
     path('reservations/', views.view_reservations, name='view_reservations'),
@@ -38,9 +36,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout'),
-    path('login/', views.login_view, name='login'),
-    path('signup/', views.signup_view, name='signup'),
-    path('logout/', views.logout_view, name='logout'),
 
 
 
@@ -49,6 +44,6 @@ urlpatterns = [
 
     path('rewards/', views.rewards, name='rewards'),
 
-    path('about/', views.about, name='about'),
+
 
 ]    
