@@ -463,3 +463,7 @@ def rewards(request):
         loyalty_points = user_profile.loyalty_points
 
     return render(request, 'rewards.html', {'loyalty_points': loyalty_points})
+
+
+def about(request):
+    return render(request, 'about.html')

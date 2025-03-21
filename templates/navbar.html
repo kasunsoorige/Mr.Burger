@@ -23,10 +23,10 @@
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">Rewards</a>
         </li> 
         <li class="nav-item" style="background-color: #ffffff; padding: 10px 15px; border-radius: 5px;">
-          <a href="" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
+          <a href="{% url 'about' %}" style="text-decoration: none; color: rgb(0, 0, 0); font-size: 16px; display: block;"
           onmouseover="this.parentElement.style.backgroundColor='#fffaaf'"
           onmouseout="this.parentElement.style.backgroundColor='#ffffff'">About Us</a>
-        </li> 
+      </li>
 
         {% if user.is_authenticated %}
         {% if user.is_superuser %}
