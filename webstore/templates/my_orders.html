@@ -1,0 +1,46 @@
+<!-- templates/my_orders.html -->
+{% extends 'base.html' %}  <!-- Extend your base template -->
+
+{% block content %}
+  <h1>My Orders</h1>
+  {% if orders %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Items</th>
+          <th>Order Date</th>
+          <th>Status</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>
+              <ul>
+                {% for item in order.orderitem_set.all %}
+                  <li>{{ item.item.name }} (x{{ item.quantity }}) - Rs. {{ item.item.price|floatformat:2 }}</li>
+                {% empty %}
+                  <li>No items in this order.</li>
+                {% endfor %}
+              </ul>
+            </td>
+            <td>{{ order.order_date }}</td>
+            <td>
+              {% if order.status == 'Incomplete' %}
+                <span class="badge bg-warning">Incomplete</span>
+              {% else %}
+                <span class="badge bg-success">Complete</span>
+              {% endif %}
+            </td>
+            <td>Rs {{ order.total_price|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>You have no orders yet.</p>
+  {% endif %}
+{% endblock %}

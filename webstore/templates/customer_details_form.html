@@ -25,5 +25,17 @@
             <button type="submit" class="btn btn-primary px-4">Reserve</button>
         </div>
     </form>
+    
+    <script>
+        // JavaScript to update the hidden input with the selected table value
+        document.querySelectorAll('input[name="table"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById('selected-table').value = this.value;
+                }
+            });
+        });
+    </script>
+
 </div>
 {% endblock %}

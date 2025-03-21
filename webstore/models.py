@@ -1,13 +1,25 @@
 from django.db import models
 import json
-
-
 from django.db import models
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import User  # Import the User model
+from django.db import models
+from django.conf import settings
+
 
 # Create your models here.
+from django.contrib.auth.models import User
+from django.db import models
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    loyalty_points = models.FloatField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+    
+
 class Menu(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=400)
@@ -19,6 +31,12 @@ class Menu(models.Model):
 
 
 class Order(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,  # Allow null values
+        blank=True,  # Allow blank values in forms
+    ) # Link order to user
     items = models.TextField()  # Use for sqlite
     # items = models.JSONField()  # Uncomment for MySQL to store cart items in JSON format
     order_date = models.DateTimeField(auto_now_add=True)
@@ -28,10 +46,14 @@ class Order(models.Model):
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Incomplete')
     total_price = models.FloatField(default=0)
+
     def __str__(self):
         return f"Order #{self.id} - {self.status}"
-
     
+
+
+
+
 
     # To save the items as JSON for SQLite (only needed if using SQLite)
     def save(self, *args, **kwargs):
@@ -76,16 +98,25 @@ class OrderItem(models.Model):
 
 
 
+class Table(models.Model):
+    number = models.CharField(max_length=50, unique=True)  # Table number (e.g., "1", "2", etc.)
+
+    def __str__(self):
+        return f"Table {self.number}"
+
 class Reservation(models.Model):
     date = models.DateField()
     time = models.TimeField()
     num_people = models.IntegerField()
-    space_preference = models.CharField(max_length=50)
+    tables = models.ManyToManyField(Table)  # Many-to-many relationship with Table
     customer_name = models.CharField(max_length=100)
     customer_email = models.EmailField()
     customer_phone = models.CharField(max_length=15)
 
-
+    def __str__(self):
+        return f"Reservation for {self.customer_name} on {self.date} at {self.time}"
+    
+    
 class Notification(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     message = models.CharField(max_length=255)
